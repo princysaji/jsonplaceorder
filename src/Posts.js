@@ -5,6 +5,7 @@ class Posts extends Component {
         super(props);
         this.state = {
             data: '',
+            userId:'',
         };
     }
 
@@ -15,9 +16,7 @@ class Posts extends Component {
                 console.log(data);
                 let val = data.map((item) => {
                     return (
-                        <div key={item.id}>
-                          <p>{item.id}</p>
-                            <p>{item.userId}</p>
+                        <div key={item.id} className="part">
                             <p>{item.title}</p>
                             <p>{item.body}</p>
                         </div>
@@ -27,11 +26,33 @@ class Posts extends Component {
             })
             .catch(error => console.log("error", error));
     }
-
+    singlepost = () =>
+    {
+        fetch('https://jsonplaceholder.typicode.com/posts')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                let val = data.map((item) => {
+                     if (item.userId==3)
+                        {
+                        return (
+                       
+                            <div key={item.id} className="part">
+                                <p>{item.title}</p>
+                                <p>{item.body}</p>
+                            </div>
+                        )
+                        }        
+                })
+                this.setState({ data: val });
+            })
+            .catch(error => console.log("error", error));
+    }
     render() {
 
         return (
-            <div>
+            <div >
+                <button onClick={this.singlepost}>View My Post</button>
       {this.state.data}
       
       </div>
